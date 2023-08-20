@@ -17,9 +17,9 @@ class MyApp extends StatelessWidget {
       ),
       home: const HomePage(),
        routes: {
-        '/home': (_) => const QuestionPage(),
-        '/signin': (_) => const ResultsPage(),
-        '/signup': (_) => const AnswersPage(),
+        '/question': (_) => const QuestionPage(),
+        '/results': (_) => const ResultsPage(),
+        '/answers': (_) => const AnswersPage(),
       },
     );
   }

@@ -12,7 +12,7 @@ class HomePage extends StatelessWidget {
       body: Center(
         child: ElevatedButton(
           onPressed: () {
-             Navigator.of(context).pushNamed('/');
+             Navigator.of(context).pushNamed('/question');
           },
           child: const Text('Novo Quetionário'),
         ),
