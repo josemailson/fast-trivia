@@ -23,13 +23,3 @@ class Answer {
     );
   }
 }
-
-final List<Answer> answers = [
-  Answer(
-    id: 1,
-    questionId: 1,
-    selectedAnswerId: -1,
-    correctAnswerId: 4,
-    isCorrect: false,
-  ),
-];
