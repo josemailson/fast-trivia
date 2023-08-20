@@ -1,8 +1,16 @@
+import 'package:fast_trivia/controller/questions_controller.dart';
+import 'package:fast_trivia/repositories/questions_repository.dart';
 import 'package:flutter/material.dart';
 
-class HomePage extends StatelessWidget {
+class HomePage extends StatefulWidget {
   const HomePage({super.key});
 
+  @override
+  State<HomePage> createState() => _HomePageState();
+}
+
+class _HomePageState extends State<HomePage> {
+  final controller = QuestionsController(QuestionsRepositoryHttp());
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -18,7 +26,7 @@ class HomePage extends StatelessWidget {
                 padding: const EdgeInsets.all(8.0),
                 child: ElevatedButton(
                   onPressed: () {
-                     Navigator.of(context).pushNamed('/question');
+                     Navigator.of(context).pushNamed('/question').then((_) => controller.getQuestions());
                   },
                   child: const Text('Novo Quetionário'),
                 ),

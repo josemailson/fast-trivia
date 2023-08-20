@@ -1,34 +1,11 @@
-class Questionario {
-  final int id;
-  final String titulo;
-  final List<Questao> questoes;
-
-  Questionario({
-    required this.id,
-    required this.titulo,
-    required this.questoes,
-  });
-
-  factory Questionario.fromJson(Map<String, dynamic> json) {
-    List<dynamic> questoesJson = json['questoes'];
-    List<Questao> questoes = questoesJson.map((e) => Questao.fromJson(e)).toList();
-
-    return Questionario(
-      id: json['id'],
-      titulo: json['titulo'],
-      questoes: questoes,
-    );
-  }
-}
-
-class Questao {
+class Question {
   final int id;
   final String titulo;
   final String pergunta;
   final int gabarito;
-  final List<Alternativa> alternativas;
+  final List<Alternative> alternativas;
 
-  Questao({
+  Question({
     required this.id,
     required this.titulo,
     required this.pergunta,
@@ -36,11 +13,11 @@ class Questao {
     required this.alternativas,
   });
 
-  factory Questao.fromJson(Map<String, dynamic> json) {
+  factory Question.fromJson(Map<String, dynamic> json) {
     List<dynamic> alternativasJson = json['alternativas'];
-    List<Alternativa> alternativas = alternativasJson.map((e) => Alternativa.fromJson(e)).toList();
+    List<Alternative> alternativas = alternativasJson.map((e) => Alternative.fromJson(e)).toList();
 
-    return Questao(
+    return Question(
       id: json['id'],
       titulo: json['titulo'],
       pergunta: json['pergunta'],
@@ -50,17 +27,17 @@ class Questao {
   }
 }
 
-class Alternativa {
+class Alternative {
   final int id;
   final String titulo;
 
-  Alternativa({
+  Alternative({
     required this.id,
     required this.titulo,
   });
 
-  factory Alternativa.fromJson(Map<String, dynamic> json) {
-    return Alternativa(
+  factory Alternative.fromJson(Map<String, dynamic> json) {
+    return Alternative(
       id: json['id'],
       titulo: json['titulo'],
     );
