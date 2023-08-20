@@ -9,12 +9,127 @@ class HomePage extends StatelessWidget {
       appBar: AppBar(
         title: const Text('Fast Trivia'),
       ),
-      body: Center(
-        child: ElevatedButton(
-          onPressed: () {
-             Navigator.of(context).pushNamed('/question');
-          },
-          child: const Text('Novo Quetionário'),
+      body: SingleChildScrollView(
+        child: Center(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.stretch,
+            children: [
+              Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: ElevatedButton(
+                  onPressed: () {
+                     Navigator.of(context).pushNamed('/question');
+                  },
+                  child: const Text('Novo Quetionário'),
+                ),
+              ),
+              Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: Card(
+                  child: Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: Column(
+                      children: [
+                        const Text('Questionário 1'),
+                        const Text('Resultado'),
+                        const Text('10/10'),
+                        ElevatedButton(
+                          onPressed: () {
+                            Navigator.of(context).pushNamed('/answers');
+                          },
+                          child: const Text('Ver Respostas'),
+                        ),
+                      ],
+                    ),
+                  )
+                  ),
+              ),
+                          Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: Card(
+                  child: Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: Column(
+                      children: [
+                        const Text('Questionário 1'),
+                        const Text('Resultado'),
+                        const Text('10/10'),
+                        ElevatedButton(
+                          onPressed: () {
+                            Navigator.of(context).pushNamed('/answers');
+                          },
+                          child: const Text('Ver Respostas'),
+                        ),
+                      ],
+                    ),
+                  )
+                  ),
+              ),
+                          Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: Card(
+                  child: Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: Column(
+                      children: [
+                        const Text('Questionário 1'),
+                        const Text('Resultado'),
+                        const Text('10/10'),
+                        ElevatedButton(
+                          onPressed: () {
+                            Navigator.of(context).pushNamed('/answers');
+                          },
+                          child: const Text('Ver Respostas'),
+                        ),
+                      ],
+                    ),
+                  )
+                  ),
+              ),
+                          Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: Card(
+                  child: Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: Column(
+                      children: [
+                        const Text('Questionário 1'),
+                        const Text('Resultado'),
+                        const Text('10/10'),
+                        ElevatedButton(
+                          onPressed: () {
+                            Navigator.of(context).pushNamed('/answers');
+                          },
+                          child: const Text('Ver Respostas'),
+                        ),
+                      ],
+                    ),
+                  )
+                  ),
+              ),
+                          Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: Card(
+                  child: Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: Column(
+                      children: [
+                        const Text('Questionário 1'),
+                        const Text('Resultado'),
+                        const Text('10/10'),
+                        ElevatedButton(
+                          onPressed: () {
+                            Navigator.of(context).pushNamed('/answers');
+                          },
+                          child: const Text('Ver Respostas'),
+                        ),
+                      ],
+                    ),
+                  )
+                  ),
+              ),
+            ],
+          ),
         ),
       ),
     );

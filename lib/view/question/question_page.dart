@@ -73,10 +73,9 @@ class _QuestionPageState extends State<QuestionPage> {
             const SizedBox(height: 16),
             ElevatedButton(
               onPressed: () {
-                // You can add your logic here to check the selected answer and proceed
-                // with the quiz.
+                Navigator.of(context).pushNamed('/results');
               },
-              child: const Text('Submit'),
+              child: const Text('Responder'),
             ),
           ],
         ),

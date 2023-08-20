@@ -37,10 +37,16 @@ class _ResultsPageState extends State<ResultsPage> {
             const SizedBox(height: 16),
             ElevatedButton(
               onPressed: () {
-                // You can add your logic here to check the selected answer and proceed
-                // with the quiz.
+                Navigator.of(context).pushNamed('/question');
               },
               child: const Text('Novo questionário'),
+            ),
+            const SizedBox(height: 16),
+            ElevatedButton(
+              onPressed: () {
+                Navigator.of(context).pushNamed('/home');
+              },
+              child: const Text('Página inicial'),
             ),
           ],
         ),
