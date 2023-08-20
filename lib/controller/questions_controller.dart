@@ -12,18 +12,18 @@ class QuestionsController {
   QuestionPageState get state => notifier.value;
 
   Future<List<Question>> getQuestions() async {
-  notifier.value = QuestionPageLoadingState();
-  try {
-    final result = await repository.getQuestions();
-    if (result.isEmpty) {
-      notifier.value = QuestionPageEmptyState();
-    } else {
-      notifier.value = QuestionPageSuccessState(result);
+    notifier.value = QuestionPageLoadingState();
+    try {
+      final result = await repository.getQuestions();
+      if (result.isEmpty) {
+        notifier.value = QuestionPageEmptyState();
+      } else {
+        notifier.value = QuestionPageSuccessState(result);
+      }
+      return result;
+    } catch (e) {
+      notifier.value = QuestionPageErrorState(e.toString());
+      rethrow;
     }
-    return result;
-  } catch (e) {
-    notifier.value = QuestionPageErrorState(e.toString());
-    rethrow;
   }
-}
 }

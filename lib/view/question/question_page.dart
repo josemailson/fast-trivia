@@ -17,7 +17,7 @@ class _QuestionPageState extends State<QuestionPage> {
   int _selectedOptionIndex = -1;
   List<String> _options = [];
 
-  List<Question>? _questions; // List to store the questions
+  List<Question>? _questions;
 
   @override
   void initState() {
