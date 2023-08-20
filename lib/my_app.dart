@@ -1,4 +1,4 @@
-import 'package:fast_trivia/view/home/HomePage.dart';
+import 'package:fast_trivia/view/home/home_page.dart';
 import 'package:flutter/material.dart';
 
 class MyApp extends StatelessWidget {
@@ -8,7 +8,7 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
-      title: 'To Do List',
+      title: 'Fast Trivia',
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),

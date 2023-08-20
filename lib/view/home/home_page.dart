@@ -12,7 +12,7 @@ class HomePage extends StatelessWidget {
           onPressed: () {
             // Lógica para ação do botão "Nova Pergunta"
           },
-          child: Text('Nova Pergunta'),
+          child: const Text('Novo Quetionário'),
         ),
       ),
     );
