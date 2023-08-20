@@ -4,7 +4,7 @@ class ResultsPage extends StatefulWidget {
   const ResultsPage({super.key});
 
   @override
-  _ResultsPageState createState() => _ResultsPageState();
+  State<ResultsPage> createState() => _ResultsPageState();
 }
 
 class _ResultsPageState extends State<ResultsPage> {
