@@ -15,74 +15,106 @@ class _HomePageState extends State<HomePage> {
   final answersController = AnswersController(AnswersRepositoryHttp());
   final questionsController = QuestionsController(QuestionsRepositoryHttp());
 
-  List<Map<String, dynamic>> _quizSummaries = []; // Store quiz summaries here
-
   @override
   void initState() {
     super.initState();
     _loadQuizSummaries();
   }
 
-  Future<void> _loadQuizSummaries() async {
-    try {
-      // Fetch quiz summaries using answersController and questionsController
-      final answers = await answersController.getAnswers();
-      final questions = await questionsController.getQuestions();
+Future<List<Map<String, dynamic>>> _loadQuizSummaries() async {
+  try {
+    final answers = await answersController.getAnswers();
+    final questions = await questionsController.getQuestions();
 
-      // Assuming you have logic to calculate quiz results based on answers and questions
-      // You can modify this part based on your actual data structure
-      for (var i = 0; i < questions.length; i++) {
-        final quizId = i + 1;
-        final totalQuestions = questions[i].alternativas.length;
-        final correctAnswers = answers.where((answer) =>
-            answer.questionId == questions[i].id &&
-            answer.isCorrect == true).length;
+    final quizSummaries = <Map<String, dynamic>>[];
 
-        _quizSummaries.add({
-          'quizId': quizId,
-          'correctAnswers': correctAnswers,
-          'totalQuestions': totalQuestions,
-        });
+    for (var i = 0; i < answers.length; i++) {
+      final answer = answers[i];
+      final quizId = i + 1;
+      final totalQuestions = answer.respostas.questoes.length;
+
+      // Calculate the correct answers
+      int correctAnswers = 0;
+      for (var questao in answer.respostas.questoes) {
+        final questaoId = questao.id;
+        final questionWithGabarito =
+            questions.firstWhere((q) => q.id == questaoId);
+        if (questao.resposta == questionWithGabarito.gabarito) {
+          correctAnswers++;
+        }
       }
-    } catch (e) {
-      // Handle the error if needed
-    }
-  }
 
-  @override
+      quizSummaries.add({
+        'quizId': quizId,
+        'correctAnswers': correctAnswers,
+        'totalQuestions': totalQuestions,
+      });
+    }
+
+    return quizSummaries;
+  } catch (e) {
+    rethrow;
+  }
+}
+
+ @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         title: const Text('Fast Trivia'),
       ),
-      body: SingleChildScrollView(
-        child: Center(
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.stretch,
-            children: _quizSummaries.map((quizSummary) {
-              return Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: Card(
-                  child: Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: Column(
-                      children: [
-                        Text('Questionário ${quizSummary['quizId']}'),
-                        Text('Resultado: ${quizSummary['correctAnswers']}/${quizSummary['totalQuestions']}'),
-                        ElevatedButton(
-                          onPressed: () {
-                            Navigator.of(context).pushNamed('/answers');
-                          },
-                          child: const Text('Ver Respostas'),
-                        ),
-                      ],
-                    ),
-                  ),
-                ),
-              );
-            }).toList(),
+      body: Column(
+        children: [
+          ElevatedButton(
+            onPressed: () {
+              Navigator.of(context).pushNamed('/question');
+            },
+            child: const Text('Iniciar Novo Questionário'),
           ),
-        ),
+          Expanded(
+            child: FutureBuilder<List<Map<String, dynamic>>>(
+              future: _loadQuizSummaries(),
+              builder: (context, snapshot) {
+                if (snapshot.connectionState == ConnectionState.waiting) {
+                  return const Center(child: CircularProgressIndicator());
+                } else if (snapshot.hasError) {
+                  return Center(child: Text('Error: ${snapshot.error}'));
+                } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
+                  return const Center(child: Text('No data available.'));
+                }
+
+                final quizSummaries = snapshot.data!;
+
+                return ListView.builder(
+                  itemCount: quizSummaries.length,
+                  itemBuilder: (context, quizIndex) {
+                    final quiz = quizSummaries[quizIndex];
+                    return Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: Card(
+                        child: Padding(
+                          padding: const EdgeInsets.all(8.0),
+                          child: Column(
+                            children: [
+                              Text('Questionário ${quiz['quizId']}'),
+                              Text('Resultado: ${quiz['correctAnswers']}/${quiz['totalQuestions']}'),
+                              ElevatedButton(
+                                onPressed: () {
+                                  Navigator.of(context).pushNamed('/answers');
+                                },
+                                child: const Text('Ver Respostas'),
+                              ),
+                            ],
+                          ),
+                        ),
+                      ),
+                    );
+                  },
+                );
+              },
+            ),
+          ),
+        ],
       ),
     );
   }

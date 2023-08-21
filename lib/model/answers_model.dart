@@ -1,25 +1,52 @@
 class Answer {
-  final int id;
-  final int questionId;
-  final int selectedAnswerId;
-  final int correctAnswerId;
-  final bool isCorrect;
+  final String id;
+  final AnswerDetails respostas;
 
   Answer({
     required this.id,
-    required this.questionId,
-    required this.selectedAnswerId,
-    required this.correctAnswerId,
-    required this.isCorrect,
+    required this.respostas,
   });
 
   factory Answer.fromJson(Map<String, dynamic> json) {
     return Answer(
       id: json['id'],
-      questionId: json['questionId'],
-      selectedAnswerId: json['selectedAnswerId'],
-      correctAnswerId: json['correctAnswerId'],
-      isCorrect: json['isCorrect'],
+      respostas: AnswerDetails.fromJson(json['respostas']),
+    );
+  }
+}
+
+class AnswerDetails {
+  final int id;
+  final List<Questao> questoes;
+
+  AnswerDetails({
+    required this.id,
+    required this.questoes,
+  });
+
+  factory AnswerDetails.fromJson(Map<String, dynamic> json) {
+    return AnswerDetails(
+      id: json['id'],
+      questoes: List<Questao>.from(
+        json['questoes'].map((questao) => Questao.fromJson(questao)),
+      ),
+    );
+  }
+}
+
+class Questao {
+  final int id;
+  final int resposta;
+
+  Questao({
+    required this.id,
+    required this.resposta,
+  });
+
+  factory Questao.fromJson(Map<String, dynamic> json) {
+    return Questao(
+      id: json['id'],
+      resposta: json['resposta'],
     );
   }
 }
