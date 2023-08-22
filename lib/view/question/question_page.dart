@@ -4,6 +4,7 @@ import 'package:fast_trivia/model/answers_model.dart';
 import 'package:fast_trivia/model/questions_model.dart';
 import 'package:fast_trivia/repositories/Answers_repository.dart';
 import 'package:fast_trivia/repositories/questions_repository.dart';
+import 'package:fast_trivia/resources/text_styles.dart';
 import 'package:fast_trivia/view/question/question_page_state.dart';
 import 'package:flutter/material.dart';
 
@@ -41,8 +42,7 @@ class _QuestionPageState extends State<QuestionPage> {
 
   Future<void> _loadQuestions() async {
     try {
-      await questionsController
-          .getQuestions();
+      await questionsController.getQuestions();
     } catch (e) {
       // Lidar com erro
     }
@@ -57,13 +57,14 @@ class _QuestionPageState extends State<QuestionPage> {
   }
 
   void _selectOption(int index) {
-  setState(() {
-    _selectedOptionIndex = index;
-    final selectedQuestaoId = _questions![_currentQuestionIndex].id;
-    final selectedResposta = _selectedOptionIndex + 1;
-    _answeredQuestions.add(Questao(id: selectedQuestaoId, resposta: selectedResposta));
-  });
-}
+    setState(() {
+      _selectedOptionIndex = index;
+      final selectedQuestaoId = _questions![_currentQuestionIndex].id;
+      final selectedResposta = _selectedOptionIndex + 1;
+      _answeredQuestions
+          .add(Questao(id: selectedQuestaoId, resposta: selectedResposta));
+    });
+  }
 
   void _nextQuestion() {
     if (_selectedOptionIndex < 0) {
@@ -80,15 +81,15 @@ class _QuestionPageState extends State<QuestionPage> {
   }
 
   void _submitAnswers() async {
-  if (_answeredQuestions.length == _questions!.length) {
-    final answerDetails = AnswerDetails(id: 1, questoes: _answeredQuestions);
-    final answer = Answer(id: '1', respostas: answerDetails);
-    await answersController.createAnswers(answer);
-  } else {
-    _showAlertDialog('Atenção', 'Você deve responder todas as questões antes de enviar.');
+    if (_answeredQuestions.length == _questions!.length) {
+      final answerDetails = AnswerDetails(id: 1, questoes: _answeredQuestions);
+      final answer = Answer(id: '1', respostas: answerDetails);
+      await answersController.createAnswers(answer);
+    } else {
+      _showAlertDialog(
+          'Atenção', 'Você deve responder todas as questões antes de enviar.');
+    }
   }
-}
-
 
   void _showAlertDialog(String title, String message) {
     showDialog(
@@ -110,23 +111,29 @@ class _QuestionPageState extends State<QuestionPage> {
     );
   }
 
-Widget _buildButton(BuildContext context) {
-  if (_currentQuestionIndex < _questions!.length - 1) {
-    return ElevatedButton(
-      onPressed: _nextQuestion,
-      child: const Text('Próxima'),
-    );
-  } else {
-    return ElevatedButton(
-      onPressed: () {
-        _submitAnswers();
-        Navigator.of(context).pushNamedAndRemoveUntil('/results', (route) => false);
-      },
-      child: const Text('Enviar'),
-    );
+  Widget _buildButton(BuildContext context) {
+    if (_currentQuestionIndex < _questions!.length - 1) {
+      return ElevatedButton(
+        onPressed: _nextQuestion,
+        child: const Text(
+          'Próxima',
+          style: AppTextStyles.button,
+        ),
+      );
+    } else {
+      return ElevatedButton(
+        onPressed: () {
+          _submitAnswers();
+          Navigator.of(context)
+              .pushNamedAndRemoveUntil('/results', (route) => false);
+        },
+        child: const Text(
+          'Enviar',
+          style: AppTextStyles.button,
+        ),
+      );
+    }
   }
-}
-
 
   @override
   Widget build(BuildContext context) {
@@ -140,7 +147,10 @@ Widget _buildButton(BuildContext context) {
 
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Fast Trivia'),
+        title: const Text(
+          'Fast Trivia',
+          style: AppTextStyles.applicationTitle,
+        ),
       ),
       body: ValueListenableBuilder(
         valueListenable: questionsController.notifier,
@@ -152,7 +162,10 @@ Widget _buildButton(BuildContext context) {
           } else if (state is QuestionPageErrorState) {
             return Center(
               child: TextButton(
-                child: const Text('Tentar Novamente'),
+                child: const Text(
+                  'Tentar Novamente',
+                  style: AppTextStyles.normal,
+                ),
                 onPressed: () async {
                   await questionsController.getQuestions();
                 },
@@ -161,7 +174,10 @@ Widget _buildButton(BuildContext context) {
           } else if (state is QuestionPageEmptyState) {
             return Center(
               child: TextButton(
-                child: const Text('Sem questões, tente novamente mais tarde'),
+                child: const Text(
+                  'Sem questões, tente novamente mais tarde',
+                  style: AppTextStyles.normal,
+                ),
                 onPressed: () async {
                   await questionsController.getQuestions();
                 },
@@ -176,13 +192,11 @@ Widget _buildButton(BuildContext context) {
                 children: [
                   Text(
                     'Questão ${currentQuestion.id}/10',
-                    style: const TextStyle(
-                        fontSize: 18, fontWeight: FontWeight.bold),
+                    style: AppTextStyles.applicationSubtitle,
                   ),
                   Text(
                     currentQuestion.pergunta,
-                    style: const TextStyle(
-                        fontSize: 18, fontWeight: FontWeight.bold),
+                    style: AppTextStyles.normal,
                   ),
                   const SizedBox(height: 16),
                   Column(
@@ -206,10 +220,7 @@ Widget _buildButton(BuildContext context) {
                                         const EdgeInsets.symmetric(vertical: 8),
                                     child: Text(
                                       option,
-                                      style: const TextStyle(
-                                        color: Colors.white,
-                                        fontSize: 16,
-                                      ),
+                                      style: AppTextStyles.normal,
                                     ),
                                   ),
                                 ),
