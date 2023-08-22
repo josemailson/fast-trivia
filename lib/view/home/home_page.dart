@@ -66,13 +66,19 @@ class _HomePageState extends State<HomePage> {
       body: Column(
         children: [
           Padding(
-            padding: const EdgeInsets.all(8.0),
+            padding: const EdgeInsets.all(16.0),
             child: ElevatedButton(
-              onPressed: () {
-                Navigator.of(context).pushNamed('/question');
-              },
-              child: const Text('Iniciar Novo Questionário', style: AppTextStyles.button),
-            ),
+                onPressed: () {
+                  Navigator.of(context).pushNamed('/question');
+                },
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: Colors.deepOrange,
+                ),
+                child: const Padding(
+                  padding: EdgeInsets.all(8.0),
+                  child: Text('Iniciar Novo Questionário',
+                      style: AppTextStyles.button),
+                )),
           ),
           Padding(
             padding: const EdgeInsets.all(8.0),
@@ -81,7 +87,13 @@ class _HomePageState extends State<HomePage> {
                 await answersController.deleteAllAnswers();
                 setState(() {});
               },
-              child: const Text('Apagar Histórico', style: AppTextStyles.button),
+              style: ElevatedButton.styleFrom(
+                backgroundColor: Colors.deepOrange,
+              ),
+              child: const Padding(
+                padding: EdgeInsets.all(8.0),
+                child: Text('Apagar Histórico', style: AppTextStyles.button),
+              ),
             ),
           ),
           Expanded(
@@ -94,7 +106,8 @@ class _HomePageState extends State<HomePage> {
                   return Center(child: Text('Error: ${snapshot.error}'));
                 } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
                   return const Center(
-                      child: Text('Nenhum questionário respondido.', style: AppTextStyles.normal));
+                      child: Text('Nenhum questionário respondido.',
+                          style: AppTextStyles.normal));
                 }
 
                 final quizSummaries = snapshot.data!;
@@ -110,15 +123,30 @@ class _HomePageState extends State<HomePage> {
                           padding: const EdgeInsets.all(8.0),
                           child: Column(
                             children: [
-                              Text('Questionário ${quiz['quizId']}', style: AppTextStyles.applicationSubtitle),
-                              Text(
-                                  'Resultado: ${quiz['correctAnswers']}/${quiz['totalQuestions']}', style: AppTextStyles.normal),
+                              Padding(
+                                padding: const EdgeInsets.all(8.0),
+                                child: Text('Questionário ${quiz['quizId']}',
+                                    style: AppTextStyles.applicationSubtitle),
+                              ),
+                              Padding(
+                                padding: const EdgeInsets.all(8.0),
+                                child: Text(
+                                    'Resultado: ${quiz['correctAnswers']}/${quiz['totalQuestions']}',
+                                    style: AppTextStyles.normal),
+                              ),
                               ElevatedButton(
                                 onPressed: () {
                                   Navigator.of(context).pushNamed('/answers',
                                       arguments: quizIndex + 1);
                                 },
-                                child: const Text('Ver Respostas', style: AppTextStyles.button),
+                                style: ElevatedButton.styleFrom(
+                                  backgroundColor: Colors.deepOrange,
+                                ),
+                                child: const Padding(
+                                  padding: EdgeInsets.all(8.0),
+                                  child: Text('Ver Respostas',
+                                      style: AppTextStyles.button),
+                                ),
                               ),
                             ],
                           ),

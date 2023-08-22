@@ -115,9 +115,15 @@ class _QuestionPageState extends State<QuestionPage> {
     if (_currentQuestionIndex < _questions!.length - 1) {
       return ElevatedButton(
         onPressed: _nextQuestion,
-        child: const Text(
-          'Próxima',
-          style: AppTextStyles.button,
+        style: ElevatedButton.styleFrom(
+                backgroundColor: Colors.deepOrange,
+              ),
+        child: const Padding(
+          padding: EdgeInsets.all(8.0),
+          child: Text(
+            'Próxima',
+            style: AppTextStyles.button,
+          ),
         ),
       );
     } else {
@@ -127,9 +133,15 @@ class _QuestionPageState extends State<QuestionPage> {
           Navigator.of(context)
               .pushNamedAndRemoveUntil('/results', (route) => false);
         },
-        child: const Text(
-          'Enviar',
-          style: AppTextStyles.button,
+        style: ElevatedButton.styleFrom(
+                backgroundColor: Colors.deepOrange,
+              ),
+        child: const Padding(
+          padding: EdgeInsets.all(8.0),
+          child: Text(
+            'Enviar',
+            style: AppTextStyles.button,
+          ),
         ),
       );
     }

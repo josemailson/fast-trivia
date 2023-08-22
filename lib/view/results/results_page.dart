@@ -1,6 +1,7 @@
 import 'package:fast_trivia/controller/answers_constroller.dart';
 import 'package:fast_trivia/repositories/Answers_repository.dart';
 import 'package:fast_trivia/repositories/questions_repository.dart';
+import 'package:fast_trivia/resources/text_styles.dart';
 import 'package:flutter/material.dart';
 import 'package:fast_trivia/controller/questions_controller.dart';
 
@@ -78,14 +79,26 @@ class _ResultsPageState extends State<ResultsPage> {
               onPressed: () {
                 Navigator.of(context).pushNamedAndRemoveUntil('/question', (route) => false);
               },
-              child: const Text('Novo questionário'),
+              style: ElevatedButton.styleFrom(
+                backgroundColor: Colors.deepOrange,
+              ),
+              child: const Padding(
+                padding: EdgeInsets.all(8.0),
+                child: Text('Novo questionário', style: AppTextStyles.button),
+              ),
             ),
             const SizedBox(height: 16),
             ElevatedButton(
               onPressed: () {
                 Navigator.of(context).pushNamedAndRemoveUntil('/home', (route) => false);
               },
-              child: const Text('Página inicial'),
+              style: ElevatedButton.styleFrom(
+                backgroundColor: Colors.deepOrange,
+              ),
+              child: const Padding(
+                padding: EdgeInsets.all(8.0),
+                child: Text('Página inicial', style: AppTextStyles.button),
+              ),
             ),
           ],
         ),
