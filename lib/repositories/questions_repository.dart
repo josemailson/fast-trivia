@@ -12,9 +12,11 @@ class QuestionsRepositoryHttp implements QuestionsRepository {
   @override
   Future<List<Question>> getQuestions() async {
     final response = await http.get(Uri.parse('$baseUrl/questionario'));
-    
+
     if (response.statusCode == 200) {
-      final List<dynamic> questionsJson = json.decode(response.body);
+      final String responseBody =
+          utf8.decode(response.bodyBytes); // Decodifica para UTF-8
+      final List<dynamic> questionsJson = json.decode(responseBody);
       List<Question> questions = [];
 
       if (questionsJson.isNotEmpty) {
@@ -30,5 +32,3 @@ class QuestionsRepositoryHttp implements QuestionsRepository {
     }
   }
 }
-
-
