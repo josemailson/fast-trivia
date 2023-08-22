@@ -83,10 +83,7 @@ class _QuestionPageState extends State<QuestionPage> {
   if (_answeredQuestions.length == _questions!.length) {
     final answerDetails = AnswerDetails(id: 1, questoes: _answeredQuestions);
     final answer = Answer(id: '1', respostas: answerDetails);
-
     await answersController.createAnswers(answer);
-
-    Navigator.of(context).pushNamedAndRemoveUntil('/results', (route) => false);
   } else {
     _showAlertDialog('Atenção', 'Você deve responder todas as questões antes de enviar.');
   }
@@ -113,19 +110,23 @@ class _QuestionPageState extends State<QuestionPage> {
     );
   }
 
-  Widget _buildButton() {
-    if (_currentQuestionIndex < _questions!.length - 1) {
-      return ElevatedButton(
-        onPressed: _nextQuestion,
-        child: const Text('Próxima'),
-      );
-    } else {
-      return ElevatedButton(
-        onPressed: _submitAnswers,
-        child: const Text('Enviar'),
-      );
-    }
+Widget _buildButton(BuildContext context) {
+  if (_currentQuestionIndex < _questions!.length - 1) {
+    return ElevatedButton(
+      onPressed: _nextQuestion,
+      child: const Text('Próxima'),
+    );
+  } else {
+    return ElevatedButton(
+      onPressed: () {
+        _submitAnswers(); // Chama _submitAnswers com o BuildContext
+        Navigator.of(context).pushNamedAndRemoveUntil('/results', (route) => false);
+      },
+      child: const Text('Enviar'),
+    );
   }
+}
+
 
   @override
   Widget build(BuildContext context) {
@@ -218,7 +219,7 @@ class _QuestionPageState extends State<QuestionPage> {
                         .toList(),
                   ),
                   const SizedBox(height: 16),
-                  _buildButton(),
+                  _buildButton(context),
                 ],
               ),
             );
