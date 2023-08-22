@@ -42,9 +42,9 @@ class _QuestionPageState extends State<QuestionPage> {
   Future<void> _loadQuestions() async {
     try {
       await questionsController
-          .getQuestions(); // Use controller to load questions
+          .getQuestions();
     } catch (e) {
-      // Handle the error if needed
+      // Lidar com erro
     }
   }
 
@@ -119,7 +119,7 @@ Widget _buildButton(BuildContext context) {
   } else {
     return ElevatedButton(
       onPressed: () {
-        _submitAnswers(); // Chama _submitAnswers com o BuildContext
+        _submitAnswers();
         Navigator.of(context).pushNamedAndRemoveUntil('/results', (route) => false);
       },
       child: const Text('Enviar'),

@@ -29,9 +29,8 @@ class _ResultsPageState extends State<ResultsPage> {
       final questions = await questionsController.getQuestions();
       final answers = await answersController.getAnswers();
 
-      // Verifique se a lista de respostas não está vazia
       if (answers.isNotEmpty) {
-        final lastAnswer = answers.last; // Obtém a última resposta da lista
+        final lastAnswer = answers.last;
 
         _totalQuestions = questions.length;
 
@@ -45,7 +44,7 @@ class _ResultsPageState extends State<ResultsPage> {
 
       setState(() {});
     } catch (e) {
-      // Tratar o erro se necessário
+      // Lidar com o erro
     }
   }
 

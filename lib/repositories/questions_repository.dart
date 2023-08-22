@@ -15,7 +15,7 @@ class QuestionsRepositoryHttp implements QuestionsRepository {
 
     if (response.statusCode == 200) {
       final String responseBody =
-          utf8.decode(response.bodyBytes); // Decodifica para UTF-8
+          utf8.decode(response.bodyBytes);
       final List<dynamic> questionsJson = json.decode(responseBody);
       List<Question> questions = [];
 
@@ -28,7 +28,7 @@ class QuestionsRepositoryHttp implements QuestionsRepository {
 
       return questions;
     } else {
-      throw Exception('Failed to load questions');
+      throw Exception('Falha ao carregar as perguntas.');
     }
   }
 }

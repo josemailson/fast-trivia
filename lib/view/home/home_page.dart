@@ -33,7 +33,6 @@ class _HomePageState extends State<HomePage> {
         final quizId = i + 1;
         final totalQuestions = answer.respostas.questoes.length;
 
-        // Calculate the correct answers
         int correctAnswers = 0;
         for (var questao in answer.respostas.questoes) {
           final questaoId = questao.id;

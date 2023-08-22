@@ -7,7 +7,7 @@ import 'package:fast_trivia/repositories/questions_repository.dart';
 import 'package:flutter/material.dart';
 
 class AnswersPage extends StatefulWidget {
-  final int quizId; // Novo atributo para armazenar a ID do questionário
+  final int quizId;
 
   const AnswersPage({required this.quizId, Key? key}) : super(key: key);
 
@@ -31,7 +31,6 @@ class _AnswersPageState extends State<AnswersPage> {
     try {
       final questions = await questionsController.getQuestions();
 
-      // Obtenha a resposta associada ao quizId
       final answers = await answersController.getAnswers();
       _quizAnswer = answers.firstWhere(
         (answer) => answer.id == widget.quizId.toString(),
@@ -42,7 +41,7 @@ class _AnswersPageState extends State<AnswersPage> {
         _questions = questions;
       });
     } catch (e) {
-      // Handle the error if needed
+      // Verificar erro
     }
   }
 

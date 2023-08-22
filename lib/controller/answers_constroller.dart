@@ -33,10 +33,10 @@ class AnswersController {
       if (result) {
         notifier.value = AnswerPageSuccessState([]);
       } else {
-        notifier.value = AnswerPageErrorState("Failed to create answer.");
+        notifier.value = AnswerPageErrorState("Erro para responder questionário.");
       }
     } catch (e) {
-      notifier.value = AnswerPageErrorState("Error creating answer: $e");
+      notifier.value = AnswerPageErrorState("Erro para responder questionário: $e");
     }
   }
 
@@ -46,10 +46,10 @@ class AnswersController {
       if (result) {
         notifier.value = AnswerPageSuccessState([]);
       } else {
-        notifier.value = AnswerPageErrorState("Failed to delete all answers.");
+        notifier.value = AnswerPageErrorState("Falha ao deletar histórico.");
       }
     } catch (e) {
-      notifier.value = AnswerPageErrorState("Error deleting all answers: $e");
+      notifier.value = AnswerPageErrorState("Falha ao deletar histórico: $e");
     }
   }
 }

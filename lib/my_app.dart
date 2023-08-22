@@ -33,7 +33,6 @@ class MyApp extends StatelessWidget {
             builder: (_) => const ResultsPage(),
           );
         }
-        // Retorne null se a rota não for encontrada
         return null;
       },
     );

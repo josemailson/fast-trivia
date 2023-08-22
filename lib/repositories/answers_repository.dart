@@ -37,14 +37,14 @@ class AnswersRepositoryHttp implements AnswersRepository {
     try {
       final response = await http.post(
         Uri.parse('$baseUrl/respostas'),
-        body: json.encode(answer.toJson()), // Convert answer to JSON
+        body: json.encode(answer.toJson()),
         headers: {
           "content-type": "application/json",
           "accept": "application/json"
         },
       );
 
-      return response.statusCode == 201; // Return true if status code is 201 (Created)
+      return response.statusCode == 201;
     } catch (e) {
       return false;
     }
