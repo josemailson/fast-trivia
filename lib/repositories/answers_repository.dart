@@ -55,11 +55,27 @@ class AnswersRepositoryHttp implements AnswersRepository {
     }
   }
 
-   @override
+  @override
   Future<bool> deleteAllAnswers() async {
-    final response = await http.delete(
-      Uri.parse('$baseUrl/respostas'),
-    );
-    return response.statusCode == 200;
+    try {
+      final List<Answer> answers = await getAnswers();
+
+      for (var answer in answers) {
+        final response = await http.delete(
+          Uri.parse('$baseUrl/respostas/${answer.id}'),
+        );
+
+        if (response.statusCode != 200) {
+          print("Failed to delete answer with ID ${answer.id}");
+          return false;
+        }
+      }
+
+      print("All answers deleted successfully!");
+      return true;
+    } catch (e) {
+      print("Error deleting all answers: $e");
+      return false;
+    }
   }
 }

@@ -77,8 +77,9 @@ Future<List<Map<String, dynamic>>> _loadQuizSummaries() async {
           Padding(
             padding: const EdgeInsets.all(8.0),
             child: ElevatedButton(
-              onPressed: () {
-                answersController.deleteAllAnswers();
+              onPressed: () async {
+                await answersController.deleteAllAnswers();
+                setState(() {});
               },
               child: const Text('Apagar Histórico'),
             ),
@@ -92,7 +93,7 @@ Future<List<Map<String, dynamic>>> _loadQuizSummaries() async {
                 } else if (snapshot.hasError) {
                   return Center(child: Text('Error: ${snapshot.error}'));
                 } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
-                  return const Center(child: Text('No data available.'));
+                  return const Center(child: Text('Nenhum questionário respondido.'));
                 }
 
                 final quizSummaries = snapshot.data!;

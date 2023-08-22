@@ -20,6 +20,7 @@ class _QuestionPageState extends State<QuestionPage> {
   int _currentQuestionIndex = 0;
   int _selectedOptionIndex = -1;
   List<String> _options = [];
+  List<Questao> _answeredQuestions = [];
 
   List<Question>? _questions;
 
@@ -56,10 +57,13 @@ class _QuestionPageState extends State<QuestionPage> {
   }
 
   void _selectOption(int index) {
-    setState(() {
-      _selectedOptionIndex = index;
-    });
-  }
+  setState(() {
+    _selectedOptionIndex = index;
+    final selectedQuestaoId = _questions![_currentQuestionIndex].id;
+    final selectedResposta = _selectedOptionIndex + 1;
+    _answeredQuestions.add(Questao(id: selectedQuestaoId, resposta: selectedResposta));
+  });
+}
 
   void _nextQuestion() {
     if (_selectedOptionIndex < 0) {
@@ -76,23 +80,18 @@ class _QuestionPageState extends State<QuestionPage> {
   }
 
   void _submitAnswers() async {
-    if (_selectedOptionIndex >= 0) {
-      final selectedQuestaoId = _questions![_currentQuestionIndex].id;
-      final selectedResposta = _selectedOptionIndex + 1;
+  if (_answeredQuestions.length == _questions!.length) {
+    final answerDetails = AnswerDetails(id: 1, questoes: _answeredQuestions);
+    final answer = Answer(id: '1', respostas: answerDetails);
 
-      final questao =
-          Questao(id: selectedQuestaoId, resposta: selectedResposta);
-      final answerDetails = AnswerDetails(id: 1, questoes: [questao]);
-      final answer = Answer(id: '1', respostas: answerDetails);
+    await answersController.createAnswers(answer);
 
-      await answersController.createAnswers(answer);
-
-      Navigator.pushReplacementNamed(context, '/results');
-    } else {
-      _showAlertDialog(
-          'Atenção', 'Você deve selecionar uma alternativa antes de enviar.');
-    }
+    Navigator.of(context).pushNamedAndRemoveUntil('/results', (route) => false);
+  } else {
+    _showAlertDialog('Atenção', 'Você deve responder todas as questões antes de enviar.');
   }
+}
+
 
   void _showAlertDialog(String title, String message) {
     showDialog(
