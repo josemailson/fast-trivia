@@ -31,14 +31,12 @@ class AnswersController {
     try {
       final result = await repository.createAnswers(answer);
       if (result) {
-        // Successfully created
-        print("Answer created successfully!");
+        notifier.value = AnswerPageSuccessState([]);
       } else {
-        // Failed to create
-        print("Failed to create answer.");
+        notifier.value = AnswerPageErrorState("Failed to create answer.");
       }
     } catch (e) {
-      print("Error creating answer: $e");
+      notifier.value = AnswerPageErrorState("Error creating answer: $e");
     }
   }
 
@@ -46,14 +44,12 @@ class AnswersController {
     try {
       final result = await repository.deleteAllAnswers();
       if (result) {
-        // Successfully deleted
-        print("All answers deleted successfully!");
+        notifier.value = AnswerPageSuccessState([]);
       } else {
-        // Failed to delete
-        print("Failed to delete all answers.");
+        notifier.value = AnswerPageErrorState("Failed to delete all answers.");
       }
     } catch (e) {
-      print("Error deleting all answers: $e");
+      notifier.value = AnswerPageErrorState("Error deleting all answers: $e");
     }
   }
 }

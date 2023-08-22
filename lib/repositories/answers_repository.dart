@@ -44,13 +44,8 @@ class AnswersRepositoryHttp implements AnswersRepository {
         },
       );
 
-      if (response.statusCode == 201) { // 201 Created
-        return true;
-      } else {
-        return false; // Failed to create
-      }
+      return response.statusCode == 201; // Return true if status code is 201 (Created)
     } catch (e) {
-      print("Error creating answer: $e");
       return false;
     }
   }
@@ -66,15 +61,12 @@ class AnswersRepositoryHttp implements AnswersRepository {
         );
 
         if (response.statusCode != 200) {
-          print("Failed to delete answer with ID ${answer.id}");
           return false;
         }
       }
 
-      print("All answers deleted successfully!");
       return true;
     } catch (e) {
-      print("Error deleting all answers: $e");
       return false;
     }
   }

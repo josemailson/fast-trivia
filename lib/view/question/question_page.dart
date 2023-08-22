@@ -20,7 +20,7 @@ class _QuestionPageState extends State<QuestionPage> {
   int _currentQuestionIndex = 0;
   int _selectedOptionIndex = -1;
   List<String> _options = [];
-  List<Questao> _answeredQuestions = [];
+  final List<Questao> _answeredQuestions = [];
 
   List<Question>? _questions;
 

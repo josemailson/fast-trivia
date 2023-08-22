@@ -5,7 +5,6 @@ import 'package:flutter/material.dart';
 import 'package:fast_trivia/controller/questions_controller.dart';
 
 class ResultsPage extends StatefulWidget {
-
   const ResultsPage({Key? key}) : super(key: key);
 
   @override
@@ -26,30 +25,29 @@ class _ResultsPageState extends State<ResultsPage> {
   }
 
   Future<void> _loadResults() async {
-  try {
-    final questions = await questionsController.getQuestions();
-    final answers = await answersController.getAnswers();
+    try {
+      final questions = await questionsController.getQuestions();
+      final answers = await answersController.getAnswers();
 
-    // Verifique se a lista de respostas não está vazia
-    if (answers.isNotEmpty) {
-      final lastAnswer = answers.last; // Obtém a última resposta da lista
+      // Verifique se a lista de respostas não está vazia
+      if (answers.isNotEmpty) {
+        final lastAnswer = answers.last; // Obtém a última resposta da lista
 
-      _totalQuestions = questions.length;
+        _totalQuestions = questions.length;
 
-      for (final questao in lastAnswer.respostas.questoes) {
-        final questionWithGabarito = questions.firstWhere((q) => q.id == questao.id);
-        if (questao.resposta == questionWithGabarito.gabarito) {
-          _correctAnswers++;
+        for (final questao in lastAnswer.respostas.questoes) {
+          final questionWithGabarito = questions.firstWhere((q) => q.id == questao.id);
+          if (questao.resposta == questionWithGabarito.gabarito) {
+            _correctAnswers++;
+          }
         }
       }
+
+      setState(() {});
+    } catch (e) {
+      // Tratar o erro se necessário
     }
-
-    setState(() {});
-  } catch (e) {
-    print('Error loading results: $e');
   }
-}
-
 
   @override
   Widget build(BuildContext context) {
