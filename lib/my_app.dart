@@ -12,9 +12,7 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       title: 'Fast Trivia',
-      theme: ThemeData(
-        primarySwatch: Colors.blue,
-      ),
+     theme: ThemeData.dark(),
       home: const HomePage(),
       onGenerateRoute: (settings) {
         if (settings.name == '/answers') {
