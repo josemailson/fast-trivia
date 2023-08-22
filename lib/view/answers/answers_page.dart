@@ -4,6 +4,7 @@ import 'package:fast_trivia/model/answers_model.dart';
 import 'package:fast_trivia/model/questions_model.dart';
 import 'package:fast_trivia/repositories/Answers_repository.dart';
 import 'package:fast_trivia/repositories/questions_repository.dart';
+import 'package:fast_trivia/resources/text_styles.dart';
 import 'package:flutter/material.dart';
 
 class AnswersPage extends StatefulWidget {
@@ -49,7 +50,7 @@ class _AnswersPageState extends State<AnswersPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Fast Trivia'),
+        title: const Text('Fast Trivia', style: AppTextStyles.applicationTitle,),
       ),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
@@ -76,7 +77,7 @@ class _AnswersPageState extends State<AnswersPage> {
           children: [
             Text(
               'Question ${question.id}: ${question.pergunta}',
-              style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+              style: AppTextStyles.applicationSubtitle,
             ),
             const SizedBox(height: 16),
             Column(
@@ -95,10 +96,7 @@ class _AnswersPageState extends State<AnswersPage> {
                   margin: const EdgeInsets.symmetric(vertical: 8),
                   child: Text(
                     alternative.titulo,
-                    style: TextStyle(
-                      color: isCorrect || isSelectedAnswerDifferent ? Colors.white : Colors.black,
-                      fontSize: 16,
-                    ),
+                    style: AppTextStyles.normal,
                   ),
                 );
               }).toList(),

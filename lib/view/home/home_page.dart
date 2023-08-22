@@ -2,6 +2,7 @@ import 'package:fast_trivia/controller/answers_constroller.dart';
 import 'package:fast_trivia/controller/questions_controller.dart';
 import 'package:fast_trivia/repositories/Answers_repository.dart';
 import 'package:fast_trivia/repositories/questions_repository.dart';
+import 'package:fast_trivia/resources/text_styles.dart';
 import 'package:flutter/material.dart';
 
 class HomePage extends StatefulWidget {
@@ -60,7 +61,7 @@ class _HomePageState extends State<HomePage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Fast Trivia'),
+        title: const Text('Fast Trivia', style: AppTextStyles.applicationTitle),
       ),
       body: Column(
         children: [
@@ -70,7 +71,7 @@ class _HomePageState extends State<HomePage> {
               onPressed: () {
                 Navigator.of(context).pushNamed('/question');
               },
-              child: const Text('Iniciar Novo Questionário'),
+              child: const Text('Iniciar Novo Questionário', style: AppTextStyles.button),
             ),
           ),
           Padding(
@@ -80,7 +81,7 @@ class _HomePageState extends State<HomePage> {
                 await answersController.deleteAllAnswers();
                 setState(() {});
               },
-              child: const Text('Apagar Histórico'),
+              child: const Text('Apagar Histórico', style: AppTextStyles.button),
             ),
           ),
           Expanded(
@@ -93,7 +94,7 @@ class _HomePageState extends State<HomePage> {
                   return Center(child: Text('Error: ${snapshot.error}'));
                 } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
                   return const Center(
-                      child: Text('Nenhum questionário respondido.'));
+                      child: Text('Nenhum questionário respondido.', style: AppTextStyles.normal));
                 }
 
                 final quizSummaries = snapshot.data!;
@@ -109,15 +110,15 @@ class _HomePageState extends State<HomePage> {
                           padding: const EdgeInsets.all(8.0),
                           child: Column(
                             children: [
-                              Text('Questionário ${quiz['quizId']}'),
+                              Text('Questionário ${quiz['quizId']}', style: AppTextStyles.applicationSubtitle),
                               Text(
-                                  'Resultado: ${quiz['correctAnswers']}/${quiz['totalQuestions']}'),
+                                  'Resultado: ${quiz['correctAnswers']}/${quiz['totalQuestions']}', style: AppTextStyles.normal),
                               ElevatedButton(
                                 onPressed: () {
                                   Navigator.of(context).pushNamed('/answers',
                                       arguments: quizIndex + 1);
                                 },
-                                child: const Text('Ver Respostas'),
+                                child: const Text('Ver Respostas', style: AppTextStyles.button),
                               ),
                             ],
                           ),
