@@ -4,7 +4,6 @@ import 'package:fast_trivia/model/answers_model.dart';
 import 'package:fast_trivia/model/questions_model.dart';
 import 'package:fast_trivia/repositories/Answers_repository.dart';
 import 'package:fast_trivia/repositories/questions_repository.dart';
-import 'package:fast_trivia/resources/text_styles.dart';
 import 'package:fast_trivia/view/question/question_page_state.dart';
 import 'package:flutter/material.dart';
 
@@ -115,7 +114,7 @@ Widget _buildButton(BuildContext context) {
   if (_currentQuestionIndex < _questions!.length - 1) {
     return ElevatedButton(
       onPressed: _nextQuestion,
-      child: const Text('Próxima', style: AppTextStyles.button,),
+      child: const Text('Próxima'),
     );
   } else {
     return ElevatedButton(
@@ -123,7 +122,7 @@ Widget _buildButton(BuildContext context) {
         _submitAnswers();
         Navigator.of(context).pushNamedAndRemoveUntil('/results', (route) => false);
       },
-      child: const Text('Enviar', style: AppTextStyles.button,),
+      child: const Text('Enviar'),
     );
   }
 }
@@ -141,7 +140,7 @@ Widget _buildButton(BuildContext context) {
 
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Fast Trivia', style: AppTextStyles.applicationTitle),
+        title: const Text('Fast Trivia'),
       ),
       body: ValueListenableBuilder(
         valueListenable: questionsController.notifier,
@@ -153,7 +152,7 @@ Widget _buildButton(BuildContext context) {
           } else if (state is QuestionPageErrorState) {
             return Center(
               child: TextButton(
-                child: const Text('Tentar Novamente', style: AppTextStyles.normal),
+                child: const Text('Tentar Novamente'),
                 onPressed: () async {
                   await questionsController.getQuestions();
                 },
@@ -162,7 +161,7 @@ Widget _buildButton(BuildContext context) {
           } else if (state is QuestionPageEmptyState) {
             return Center(
               child: TextButton(
-                child: const Text('Sem questões, tente novamente mais tarde', style: AppTextStyles.normal),
+                child: const Text('Sem questões, tente novamente mais tarde'),
                 onPressed: () async {
                   await questionsController.getQuestions();
                 },
@@ -177,12 +176,13 @@ Widget _buildButton(BuildContext context) {
                 children: [
                   Text(
                     'Questão ${currentQuestion.id}/10',
-                    style: AppTextStyles.applicationSubtitle,
+                    style: const TextStyle(
+                        fontSize: 18, fontWeight: FontWeight.bold),
                   ),
                   Text(
-                    (currentQuestion.pergunta),
-                   style: AppTextStyles.normal,
-                        
+                    currentQuestion.pergunta,
+                    style: const TextStyle(
+                        fontSize: 18, fontWeight: FontWeight.bold),
                   ),
                   const SizedBox(height: 16),
                   Column(
@@ -206,7 +206,10 @@ Widget _buildButton(BuildContext context) {
                                         const EdgeInsets.symmetric(vertical: 8),
                                     child: Text(
                                       option,
-                                      style: AppTextStyles.normal,
+                                      style: const TextStyle(
+                                        color: Colors.white,
+                                        fontSize: 16,
+                                      ),
                                     ),
                                   ),
                                 ),
