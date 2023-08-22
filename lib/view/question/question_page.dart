@@ -1,5 +1,8 @@
+import 'package:fast_trivia/controller/answers_constroller.dart';
 import 'package:fast_trivia/controller/questions_controller.dart';
+import 'package:fast_trivia/model/answers_model.dart';
 import 'package:fast_trivia/model/questions_model.dart';
+import 'package:fast_trivia/repositories/Answers_repository.dart';
 import 'package:fast_trivia/repositories/questions_repository.dart';
 import 'package:fast_trivia/view/question/question_page_state.dart';
 import 'package:flutter/material.dart';
@@ -12,7 +15,8 @@ class QuestionPage extends StatefulWidget {
 }
 
 class _QuestionPageState extends State<QuestionPage> {
-  final controller = QuestionsController(QuestionsRepositoryHttp());
+  final questionsController = QuestionsController(QuestionsRepositoryHttp());
+  final answersController = AnswersController(AnswersRepositoryHttp());
   int _currentQuestionIndex = 0;
   int _selectedOptionIndex = -1;
   List<String> _options = [];
@@ -22,8 +26,8 @@ class _QuestionPageState extends State<QuestionPage> {
   @override
   void initState() {
     super.initState();
-    controller.notifier.addListener(() {
-      final state = controller.state;
+    questionsController.notifier.addListener(() {
+      final state = questionsController.state;
       if (state is QuestionPageSuccessState) {
         setState(() {
           _questions = state.questions;
@@ -36,7 +40,8 @@ class _QuestionPageState extends State<QuestionPage> {
 
   Future<void> _loadQuestions() async {
     try {
-      await controller.getQuestions(); // Use controller to load questions
+      await questionsController
+          .getQuestions(); // Use controller to load questions
     } catch (e) {
       // Handle the error if needed
     }
@@ -44,7 +49,9 @@ class _QuestionPageState extends State<QuestionPage> {
 
   void _loadQuestion(int index) {
     final currentQuestion = _questions![index];
-    _options = currentQuestion.alternativas.map((alternative) => alternative.titulo).toList();
+    _options = currentQuestion.alternativas
+        .map((alternative) => alternative.titulo)
+        .toList();
     _selectedOptionIndex = -1;
   }
 
@@ -56,7 +63,8 @@ class _QuestionPageState extends State<QuestionPage> {
 
   void _nextQuestion() {
     if (_selectedOptionIndex < 0) {
-      _showAlertDialog('Atenção', 'Você deve selecionar uma alternativa antes de avançar.');
+      _showAlertDialog(
+          'Atenção', 'Você deve selecionar uma alternativa antes de avançar.');
     } else if (_currentQuestionIndex < _questions!.length - 1) {
       setState(() {
         _currentQuestionIndex++;
@@ -67,11 +75,22 @@ class _QuestionPageState extends State<QuestionPage> {
     }
   }
 
-  void _submitAnswers() {
+  void _submitAnswers() async {
     if (_selectedOptionIndex >= 0) {
-      Navigator.of(context).pushNamed('/results');
+      final selectedQuestaoId = _questions![_currentQuestionIndex].id;
+      final selectedResposta = _selectedOptionIndex + 1;
+
+      final questao =
+          Questao(id: selectedQuestaoId, resposta: selectedResposta);
+      final answerDetails = AnswerDetails(id: 1, questoes: [questao]);
+      final answer = Answer(id: '1', respostas: answerDetails);
+
+      await answersController.createAnswers(answer);
+
+      Navigator.pushReplacementNamed(context, '/results');
     } else {
-      _showAlertDialog('Atenção', 'Você deve selecionar uma alternativa antes de enviar.');
+      _showAlertDialog(
+          'Atenção', 'Você deve selecionar uma alternativa antes de enviar.');
     }
   }
 
@@ -124,7 +143,7 @@ class _QuestionPageState extends State<QuestionPage> {
         title: const Text('Fast Trivia'),
       ),
       body: ValueListenableBuilder(
-        valueListenable: controller.notifier,
+        valueListenable: questionsController.notifier,
         builder: (context, state, _) {
           if (state is QuestionPageLoadingState) {
             return const Center(
@@ -135,7 +154,7 @@ class _QuestionPageState extends State<QuestionPage> {
               child: TextButton(
                 child: const Text('Tentar Novamente'),
                 onPressed: () async {
-                  await controller.getQuestions();
+                  await questionsController.getQuestions();
                 },
               ),
             );
@@ -144,7 +163,7 @@ class _QuestionPageState extends State<QuestionPage> {
               child: TextButton(
                 child: const Text('Sem questões, tente novamente mais tarde'),
                 onPressed: () async {
-                  await controller.getQuestions();
+                  await questionsController.getQuestions();
                 },
               ),
             );
@@ -157,11 +176,13 @@ class _QuestionPageState extends State<QuestionPage> {
                 children: [
                   Text(
                     'Questão ${currentQuestion.id}/10',
-                    style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+                    style: const TextStyle(
+                        fontSize: 18, fontWeight: FontWeight.bold),
                   ),
                   Text(
                     currentQuestion.pergunta,
-                    style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+                    style: const TextStyle(
+                        fontSize: 18, fontWeight: FontWeight.bold),
                   ),
                   const SizedBox(height: 16),
                   Column(
@@ -175,11 +196,14 @@ class _QuestionPageState extends State<QuestionPage> {
                                   widthFactor: 1,
                                   child: Container(
                                     decoration: BoxDecoration(
-                                      color: _selectedOptionIndex == index ? Colors.blue : Colors.grey,
+                                      color: _selectedOptionIndex == index
+                                          ? Colors.blue
+                                          : Colors.grey,
                                       borderRadius: BorderRadius.circular(8),
                                     ),
                                     padding: const EdgeInsets.all(12),
-                                    margin: const EdgeInsets.symmetric(vertical: 8),
+                                    margin:
+                                        const EdgeInsets.symmetric(vertical: 8),
                                     child: Text(
                                       option,
                                       style: const TextStyle(

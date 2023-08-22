@@ -13,6 +13,13 @@ class Answer {
       respostas: AnswerDetails.fromJson(json['respostas']),
     );
   }
+
+  Map<String, dynamic> toJson() {
+    return {
+      'id': id,
+      'respostas': respostas.toJson(),
+    };
+  }
 }
 
 class AnswerDetails {
@@ -32,6 +39,13 @@ class AnswerDetails {
       ),
     );
   }
+
+  Map<String, dynamic> toJson() {
+    return {
+      'id': id,
+      'questoes': questoes.map((questao) => questao.toJson()).toList(),
+    };
+  }
 }
 
 class Questao {
@@ -48,5 +62,12 @@ class Questao {
       id: json['id'],
       resposta: json['resposta'],
     );
+  }
+
+  Map<String, dynamic> toJson() {
+    return {
+      'id': id,
+      'resposta': resposta,
+    };
   }
 }

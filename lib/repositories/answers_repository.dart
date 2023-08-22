@@ -4,6 +4,8 @@ import 'package:http/http.dart' as http;
 
 abstract class AnswersRepository {
   Future<List<Answer>> getAnswers();
+  Future<bool> createAnswers(Answer answer);
+  Future<bool> deleteAllAnswers();
 }
 
 class AnswersRepositoryHttp implements AnswersRepository {
@@ -28,5 +30,36 @@ class AnswersRepositoryHttp implements AnswersRepository {
     } else {
       throw Exception('Failed to load answers');
     }
+  }
+  
+  @override
+  Future<bool> createAnswers(Answer answer) async {
+    try {
+      final response = await http.post(
+        Uri.parse('$baseUrl/respostas'),
+        body: json.encode(answer.toJson()), // Convert answer to JSON
+        headers: {
+          "content-type": "application/json",
+          "accept": "application/json"
+        },
+      );
+
+      if (response.statusCode == 201) { // 201 Created
+        return true;
+      } else {
+        return false; // Failed to create
+      }
+    } catch (e) {
+      print("Error creating answer: $e");
+      return false;
+    }
+  }
+
+   @override
+  Future<bool> deleteAllAnswers() async {
+    final response = await http.delete(
+      Uri.parse('$baseUrl/respostas'),
+    );
+    return response.statusCode == 200;
   }
 }

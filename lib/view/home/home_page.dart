@@ -18,7 +18,7 @@ class _HomePageState extends State<HomePage> {
   @override
   void initState() {
     super.initState();
-    _loadQuizSummaries();
+    answersController.getAnswers();
   }
 
 Future<List<Map<String, dynamic>>> _loadQuizSummaries() async {
@@ -65,11 +65,23 @@ Future<List<Map<String, dynamic>>> _loadQuizSummaries() async {
       ),
       body: Column(
         children: [
-          ElevatedButton(
-            onPressed: () {
-              Navigator.of(context).pushNamed('/question');
-            },
-            child: const Text('Iniciar Novo Questionário'),
+          Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: ElevatedButton(
+              onPressed: () {
+                Navigator.of(context).pushNamed('/question');
+              },
+              child: const Text('Iniciar Novo Questionário'),
+            ),
+          ),
+          Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: ElevatedButton(
+              onPressed: () {
+                answersController.deleteAllAnswers();
+              },
+              child: const Text('Apagar Histórico'),
+            ),
           ),
           Expanded(
             child: FutureBuilder<List<Map<String, dynamic>>>(

@@ -26,4 +26,34 @@ class AnswersController {
       rethrow;
     }
   }
+
+  Future<void> createAnswers(Answer answer) async {
+    try {
+      final result = await repository.createAnswers(answer);
+      if (result) {
+        // Successfully created
+        print("Answer created successfully!");
+      } else {
+        // Failed to create
+        print("Failed to create answer.");
+      }
+    } catch (e) {
+      print("Error creating answer: $e");
+    }
+  }
+
+  Future<void> deleteAllAnswers() async {
+    try {
+      final result = await repository.deleteAllAnswers();
+      if (result) {
+        // Successfully deleted
+        print("All answers deleted successfully!");
+      } else {
+        // Failed to delete
+        print("Failed to delete all answers.");
+      }
+    } catch (e) {
+      print("Error deleting all answers: $e");
+    }
+  }
 }
