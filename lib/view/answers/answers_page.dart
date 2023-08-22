@@ -1,10 +1,15 @@
+import 'package:fast_trivia/controller/answers_constroller.dart';
 import 'package:fast_trivia/controller/questions_controller.dart';
+import 'package:fast_trivia/model/answers_model.dart';
 import 'package:fast_trivia/model/questions_model.dart';
+import 'package:fast_trivia/repositories/Answers_repository.dart';
 import 'package:fast_trivia/repositories/questions_repository.dart';
 import 'package:flutter/material.dart';
 
 class AnswersPage extends StatefulWidget {
-  const AnswersPage({super.key});
+  final int quizId; // Novo atributo para armazenar a ID do questionário
+
+  const AnswersPage({required this.quizId, Key? key}) : super(key: key);
 
   @override
   State<AnswersPage> createState() => _AnswersPageState();
@@ -12,7 +17,9 @@ class AnswersPage extends StatefulWidget {
 
 class _AnswersPageState extends State<AnswersPage> {
   final questionsController = QuestionsController(QuestionsRepositoryHttp());
+  final answersController = AnswersController(AnswersRepositoryHttp());
   List<Question>? _questions;
+  Answer? _quizAnswer;
 
   @override
   void initState() {
@@ -23,6 +30,14 @@ class _AnswersPageState extends State<AnswersPage> {
   Future<void> _loadQuestions() async {
     try {
       final questions = await questionsController.getQuestions();
+
+      // Obtenha a resposta associada ao quizId
+      final answers = await answersController.getAnswers();
+      _quizAnswer = answers.firstWhere(
+        (answer) => answer.id == widget.quizId.toString(),
+        orElse: () => Answer(id: '0', respostas: AnswerDetails(id: 0, questoes: [])),
+      );
+
       setState(() {
         _questions = questions;
       });
@@ -55,6 +70,8 @@ class _AnswersPageState extends State<AnswersPage> {
       itemCount: _questions!.length,
       itemBuilder: (context, questionIndex) {
         final question = _questions![questionIndex];
+        final selectedAnswerId = _quizAnswer!.respostas.questoes[questionIndex].resposta;
+
         return Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
@@ -67,9 +84,12 @@ class _AnswersPageState extends State<AnswersPage> {
               crossAxisAlignment: CrossAxisAlignment.stretch,
               children: question.alternativas.map((alternative) {
                 final isCorrect = alternative.id == question.gabarito;
+
+                final isSelectedAnswerDifferent = selectedAnswerId != question.gabarito && selectedAnswerId == alternative.id;
+
                 return Container(
                   decoration: BoxDecoration(
-                    color: isCorrect ? Colors.green : Colors.grey,
+                    color: isCorrect ? Colors.green : isSelectedAnswerDifferent ? Colors.red : Colors.grey,
                     borderRadius: BorderRadius.circular(8),
                   ),
                   padding: const EdgeInsets.all(12),
@@ -77,7 +97,7 @@ class _AnswersPageState extends State<AnswersPage> {
                   child: Text(
                     alternative.titulo,
                     style: TextStyle(
-                      color: isCorrect ? Colors.white : Colors.black,
+                      color: isCorrect || isSelectedAnswerDifferent ? Colors.white : Colors.black,
                       fontSize: 16,
                     ),
                   ),

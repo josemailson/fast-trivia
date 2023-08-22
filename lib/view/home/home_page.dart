@@ -21,43 +21,43 @@ class _HomePageState extends State<HomePage> {
     answersController.getAnswers();
   }
 
-Future<List<Map<String, dynamic>>> _loadQuizSummaries() async {
-  try {
-    final answers = await answersController.getAnswers();
-    final questions = await questionsController.getQuestions();
+  Future<List<Map<String, dynamic>>> _loadQuizSummaries() async {
+    try {
+      final answers = await answersController.getAnswers();
+      final questions = await questionsController.getQuestions();
 
-    final quizSummaries = <Map<String, dynamic>>[];
+      final quizSummaries = <Map<String, dynamic>>[];
 
-    for (var i = 0; i < answers.length; i++) {
-      final answer = answers[i];
-      final quizId = i + 1;
-      final totalQuestions = answer.respostas.questoes.length;
+      for (var i = 0; i < answers.length; i++) {
+        final answer = answers[i];
+        final quizId = i + 1;
+        final totalQuestions = answer.respostas.questoes.length;
 
-      // Calculate the correct answers
-      int correctAnswers = 0;
-      for (var questao in answer.respostas.questoes) {
-        final questaoId = questao.id;
-        final questionWithGabarito =
-            questions.firstWhere((q) => q.id == questaoId);
-        if (questao.resposta == questionWithGabarito.gabarito) {
-          correctAnswers++;
+        // Calculate the correct answers
+        int correctAnswers = 0;
+        for (var questao in answer.respostas.questoes) {
+          final questaoId = questao.id;
+          final questionWithGabarito =
+              questions.firstWhere((q) => q.id == questaoId);
+          if (questao.resposta == questionWithGabarito.gabarito) {
+            correctAnswers++;
+          }
         }
+
+        quizSummaries.add({
+          'quizId': quizId,
+          'correctAnswers': correctAnswers,
+          'totalQuestions': totalQuestions,
+        });
       }
 
-      quizSummaries.add({
-        'quizId': quizId,
-        'correctAnswers': correctAnswers,
-        'totalQuestions': totalQuestions,
-      });
+      return quizSummaries;
+    } catch (e) {
+      rethrow;
     }
-
-    return quizSummaries;
-  } catch (e) {
-    rethrow;
   }
-}
 
- @override
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
@@ -93,7 +93,8 @@ Future<List<Map<String, dynamic>>> _loadQuizSummaries() async {
                 } else if (snapshot.hasError) {
                   return Center(child: Text('Error: ${snapshot.error}'));
                 } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
-                  return const Center(child: Text('Nenhum questionário respondido.'));
+                  return const Center(
+                      child: Text('Nenhum questionário respondido.'));
                 }
 
                 final quizSummaries = snapshot.data!;
@@ -110,10 +111,12 @@ Future<List<Map<String, dynamic>>> _loadQuizSummaries() async {
                           child: Column(
                             children: [
                               Text('Questionário ${quiz['quizId']}'),
-                              Text('Resultado: ${quiz['correctAnswers']}/${quiz['totalQuestions']}'),
+                              Text(
+                                  'Resultado: ${quiz['correctAnswers']}/${quiz['totalQuestions']}'),
                               ElevatedButton(
                                 onPressed: () {
-                                  Navigator.of(context).pushNamed('/answers');
+                                  Navigator.of(context).pushNamed('/answers',
+                                      arguments: quizIndex + 1);
                                 },
                                 child: const Text('Ver Respostas'),
                               ),

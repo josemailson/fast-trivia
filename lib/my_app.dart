@@ -16,11 +16,27 @@ class MyApp extends StatelessWidget {
         primarySwatch: Colors.blue,
       ),
       home: const HomePage(),
-       routes: {
-        '/home': (_) => const HomePage(),
-        '/question': (_) => const QuestionPage(),
-        '/results': (_) => const ResultsPage(),
-        '/answers': (_) => const AnswersPage(),
+      onGenerateRoute: (settings) {
+        if (settings.name == '/answers') {
+          final int? quizId = settings.arguments as int?;
+          return MaterialPageRoute(
+            builder: (_) => AnswersPage(quizId: quizId ?? 0),
+          );
+        } else if (settings.name == '/home') {
+          return MaterialPageRoute(
+            builder: (_) => const HomePage(),
+          );
+        } else if (settings.name == '/question') {
+          return MaterialPageRoute(
+            builder: (_) => const QuestionPage(),
+          );
+        } else if (settings.name == '/results') {
+          return MaterialPageRoute(
+            builder: (_) => const ResultsPage(),
+          );
+        }
+        // Retorne null se a rota não for encontrada
+        return null;
       },
     );
   }
